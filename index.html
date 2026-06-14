@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Uyghur Noodle House – Kamppi</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f9f4ed;--rust:#b84c2a;--rust-dark:#8c3519;--rust-light:#f0ded6;
+  --dark:#1a120b;--text:#2e1f14;--muted:#7a6055;--border:rgba(184,76,42,0.15);
+}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);font-size:15px}
+
+nav{position:sticky;top:0;z-index:200;background:rgba(249,244,237,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:58px;gap:1rem}
+.nav-logo{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--rust);white-space:nowrap}
+.nav-center{display:flex;gap:1.25rem}
+.nav-center a{font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.nav-center a:hover{color:var(--rust)}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.lang-switcher{display:flex;gap:2px;background:rgba(184,76,42,0.08);border-radius:20px;padding:3px}
+.lang-btn{border:none;background:transparent;font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--muted);letter-spacing:.04em;transition:all .2s}
+.lang-btn.active{background:var(--rust);color:#fff}
+.nav-cta{background:var(--rust);color:#fff;border:none;padding:7px 16px;font-size:12px;font-family:'Inter',sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap}
+
+.page{display:none}.page.active{display:block}
+
+.hero{min-height:480px;background:linear-gradient(135deg,#1a120b 0%,#3b1f0e 55%,#6b2f12 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(184,76,42,.06) 1px,transparent 1px);background-size:28px 28px}
+.hero-tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#e8a87c;margin-bottom:.85rem;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4.5vw,3.2rem);color:#f9f4ed;font-weight:400;line-height:1.18;position:relative}
+.hero h1 em{color:#e8a87c;font-style:italic}
+.hero-sub{font-size:14px;color:rgba(249,244,237,.6);margin-top:.9rem;max-width:380px;line-height:1.75;position:relative}
+.hero-btns{display:flex;gap:.85rem;margin-top:1.75rem;flex-wrap:wrap;justify-content:center;position:relative}
+.btn-primary{background:var(--rust);color:#fff;border:none;padding:11px 24px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-family:'Inter',sans-serif}
+.btn-outline{background:transparent;color:#f9f4ed;border:1px solid rgba(249,244,237,.35);padding:11px 24px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-family:'Inter',sans-serif}
+
+.rating-bar{background:var(--dark);padding:.7rem 2rem;display:flex;align-items:center;justify-content:center;gap:1.75rem;flex-wrap:wrap}
+.rating-item{display:flex;align-items:center;gap:.45rem}
+.stars{color:#e8a87c;font-size:13px;letter-spacing:1px}
+.rating-text{font-size:11px;color:rgba(249,244,237,.6);letter-spacing:.05em;text-transform:uppercase}
+.rating-num{font-size:14px;font-weight:500;color:#f9f4ed}
+.rdot{width:3px;height:3px;border-radius:50%;background:rgba(249,244,237,.2)}
+
+section{padding:4.5rem 1.5rem}
+.inner{max-width:860px;margin:0 auto}
+.sec-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);margin-bottom:.6rem}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400;line-height:1.2;color:var(--dark);margin-bottom:.9rem}
+.sec-body{font-size:14px;color:var(--muted);line-height:1.85;max-width:520px}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+.about-visual{aspect-ratio:4/3;background:linear-gradient(135deg,#3b1f0e,#6b2f12);border-radius:4px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+/* TO ADD YOUR OWN PHOTO: replace the gradient above with: background:url('images/restaurant.jpg') center/cover */
+.about-viz-text{font-family:'Playfair Display',serif;font-size:2.8rem;color:rgba(249,244,237,.1);text-align:center;line-height:1.2}
+.about-badge{position:absolute;bottom:1.2rem;left:1.2rem;background:var(--rust);color:#fff;padding:5px 12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:2px}
+.feat-list{margin-top:1.75rem;display:flex;flex-direction:column;gap:.65rem}
+.feat-item{display:flex;align-items:flex-start;gap:.65rem;font-size:13px;color:var(--muted)}
+.feat-dot{width:5px;height:5px;border-radius:50%;background:var(--rust);margin-top:5px;flex-shrink:0}
+
+.highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-top:2.5rem}
+.hl-card{background:#fff;border:1px solid var(--border);border-radius:4px;padding:1.25rem 1rem;text-align:center}
+.hl-icon{font-size:1.6rem;margin-bottom:.5rem}
+.hl-title{font-size:13px;font-weight:500;color:var(--dark);margin-bottom:.25rem}
+.hl-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+.menu-prev{background:var(--dark)}
+.menu-prev .sec-title{color:#f9f4ed}
+.menu-prev .sec-label{color:#e8a87c}
+.menu-prev .sec-body{color:rgba(249,244,237,.55)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;margin-top:2.5rem;border:1px solid rgba(255,255,255,.07)}
+.preview-card{padding:1.5rem 1.25rem;border-right:1px solid rgba(255,255,255,.07)}
+.preview-card:last-child{border-right:none}
+.pc-num{font-size:9px;letter-spacing:.2em;color:rgba(232,168,124,.45);margin-bottom:.6rem}
+.pc-title{font-family:'Playfair Display',serif;font-size:1rem;color:#f9f4ed;margin-bottom:.4rem;font-weight:400}
+.pc-img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:3px;margin-bottom:.75rem;border:1px solid rgba(255,255,255,.07)}
+/* TO ADD DISH PHOTOS: add <img class="pc-img" src="images/lagman.jpg" alt="Fried Leghmen"> inside each .preview-card */
+.pc-desc{font-size:12px;color:rgba(249,244,237,.4);line-height:1.6}
+.pc-price{font-size:12px;color:#e8a87c;margin-top:.85rem;font-weight:500}
+.view-menu-btn{display:block;margin:2rem auto 0;background:transparent;border:1px solid rgba(249,244,237,.3);color:#f9f4ed;padding:11px 28px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-family:'Inter',sans-serif;transition:all .2s}
+.view-menu-btn:hover{background:var(--rust);border-color:var(--rust)}
+
+.reviews-section{background:var(--rust-light)}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-top:2.25rem}
+.review-card{background:#fff;padding:1.35rem;border-radius:4px;border:1px solid rgba(184,76,42,.1)}
+.review-stars{color:var(--rust);font-size:12px;margin-bottom:.65rem}
+.review-text{font-size:13px;color:var(--muted);line-height:1.75;font-style:italic}
+.review-author{font-size:11px;color:var(--rust);margin-top:.85rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.75rem;margin-top:2.5rem}
+.info-card{padding:1.25rem;border-left:2px solid var(--rust)}
+.info-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);margin-bottom:.65rem}
+.info-val{font-size:13px;color:var(--text);line-height:1.85}
+.info-val strong{display:block;font-weight:500;color:var(--dark)}
+
+footer{background:var(--dark);padding:2rem 1.5rem;text-align:center}
+.footer-logo{font-family:'Playfair Display',serif;font-size:17px;color:#e8a87c;margin-bottom:.4rem}
+.footer-sub{font-size:11px;color:rgba(249,244,237,.3);letter-spacing:.05em}
+.footer-links{display:flex;gap:1.25rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+.footer-links a{font-size:11px;color:rgba(249,244,237,.35);text-decoration:none;text-transform:uppercase;letter-spacing:.05em;cursor:pointer}
+
+.menu-page-hero{background:var(--dark);padding:3rem 1.5rem 2rem;text-align:center}
+.menu-page-hero h1{font-family:'Playfair Display',serif;font-size:2rem;color:#f9f4ed;font-weight:400}
+.menu-page-hero p{font-size:13px;color:rgba(249,244,237,.5);margin-top:.5rem}
+.back-btn{background:transparent;border:1px solid rgba(249,244,237,.25);color:rgba(249,244,237,.7);padding:6px 16px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-family:'Inter',sans-serif;margin-top:1.25rem}
+.back-btn:hover{background:rgba(249,244,237,.1)}
+
+.menu-cats{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;padding:1.25rem 1.5rem;background:rgba(249,244,237,.04);border-bottom:1px solid rgba(255,255,255,.06)}
+.cat-btn{border:1px solid rgba(249,244,237,.15);background:transparent;color:rgba(249,244,237,.55);padding:5px 14px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-radius:20px;font-family:'Inter',sans-serif;transition:all .2s}
+.cat-btn.active,.cat-btn:hover{background:var(--rust);border-color:var(--rust);color:#fff}
+
+.menu-body{background:var(--dark);min-height:60vh;padding:2rem 1.5rem 3rem}
+.menu-section-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#e8a87c;margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.menu-items{display:flex;flex-direction:column;gap:.75rem}
+.menu-item{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1.1rem 1.25rem;border:1px solid rgba(255,255,255,.07);border-radius:3px}
+.mi-name{font-family:'Playfair Display',serif;font-size:1rem;color:#f9f4ed;font-weight:400;margin-bottom:.3rem}
+.mi-sub{font-size:12px;color:rgba(249,244,237,.4);line-height:1.55;max-width:480px}
+.mi-tags{display:flex;gap:.35rem;margin-top:.5rem;flex-wrap:wrap}
+.mi-tag{font-size:10px;padding:2px 7px;border-radius:10px;letter-spacing:.04em}
+.tag-vegan{background:rgba(34,139,34,.15);color:#6dba6d}
+.tag-spicy{background:rgba(184,76,42,.15);color:#e8a87c}
+.mi-price{font-size:13px;color:#e8a87c;font-weight:500;white-space:nowrap;margin-top:.2rem}
+.dish-img{width:72px;height:72px;border-radius:3px;object-fit:cover;flex-shrink:0;border:1px solid rgba(255,255,255,.08)}
+/* TO ADD DISH PHOTOS IN MENU: add img="images/DISHNAME.jpg" to each item in the MENU array in the JS below */
+
+@media(max-width:600px){
+  .about-grid{grid-template-columns:1fr}
+  .nav-center{display:none}
+  .preview-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="home" class="page active">
+<nav>
+  <div class="nav-logo">Uyghur Noodle House</div>
+  <div class="nav-center">
+    <a onclick="scrollTo(0,0)" data-t="nav_home">Home</a>
+    <a onclick="goMenu()" data-t="nav_menu">Menu</a>
+    <a onclick="document.getElementById('about-sec').scrollIntoView({behavior:'smooth'})" data-t="nav_about">About</a>
+    <a onclick="document.getElementById('visit-sec').scrollIntoView({behavior:'smooth'})" data-t="nav_visit">Visit</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('fi')">FI</button>
+      <button class="lang-btn" onclick="setLang('ug')">UG</button>
+    </div>
+    <button class="nav-cta" data-t="nav_reserve">Reserve</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag" data-t="hero_tag">Authentic Central Asian Cuisine · Helsinki</div>
+  <h1 data-t="hero_h1">Hand-pulled noodles,<br><em>rich with tradition</em></h1>
+  <p class="hero-sub" data-t="hero_sub">Bringing the bold, aromatic flavours of Uyghur cuisine to the heart of Kamppi.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('visit-sec').scrollIntoView({behavior:'smooth'})" data-t="hero_book">Book a table</button>
+    <button class="btn-outline" onclick="goMenu()" data-t="hero_viewmenu">View menu</button>
+  </div>
+</div>
+
+<div class="rating-bar">
+  <div class="rating-item">
+    <span class="rating-num">4.7</span>
+    <span class="stars">★★★★★</span>
+    <span class="rating-text" data-t="rating_reviews">208 Google reviews</span>
+  </div>
+  <div class="rdot"></div>
+  <div class="rating-item"><span class="rating-text" data-t="rating_hours">Open Tue–Sun · Closes 9:30 PM</span></div>
+  <div class="rdot"></div>
+  <div class="rating-item"><span class="rating-text">Malminrinne 3, Kamppi</span></div>
+</div>
+
+<section id="about-sec">
+  <div class="inner">
+    <div class="about-grid">
+      <div>
+        <div class="sec-label" data-t="about_label">Our story</div>
+        <h2 class="sec-title" data-t="about_title">Where East meets<br>West on a plate</h2>
+        <p class="sec-body" data-t="about_body">Uyghur cuisine is a rare culinary crossroads — born from the Silk Road, shaped by both Central Asian and Chinese influences. Every dish is handmade by our skilled chefs using fresh ingredients and recipes passed down through generations.</p>
+        <div class="feat-list">
+          <div class="feat-item"><div class="feat-dot"></div><span data-t="feat1">Handmade fresh noodles, pulled to order</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span data-t="feat2">Rich, slow-simmered broths and aromatic spices</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span data-t="feat3">Cozy atmosphere with couch seating</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span data-t="feat4">Two locations in Helsinki</span></div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <!-- TO ADD A RESTAURANT PHOTO: replace this div's background in CSS with url('images/restaurant.jpg') center/cover -->
+        <div class="about-viz-text">丝绸<br>之路</div>
+        <div class="about-badge" data-t="est">Est. Helsinki</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="inner">
+    <div class="sec-label" data-t="why_label">Why us</div>
+    <h2 class="sec-title" data-t="why_title">The Uyghur difference</h2>
+    <div class="highlights">
+      <div class="hl-card"><div class="hl-icon">🍜</div><div class="hl-title" data-t="hl1t">Hand-pulled noodles</div><div class="hl-desc" data-t="hl1d">Made fresh daily, every single order</div></div>
+      <div class="hl-card"><div class="hl-icon">🌿</div><div class="hl-title" data-t="hl2t">Vegan options</div><div class="hl-desc" data-t="hl2d">Plant-based choices across the menu</div></div>
+      <div class="hl-card"><div class="hl-icon">🛋️</div><div class="hl-title" data-t="hl3t">Cozy vibe</div><div class="hl-desc" data-t="hl3d">Couches, warmth, and great company</div></div>
+      <div class="hl-card"><div class="hl-icon">📍</div><div class="hl-title" data-t="hl4t">Two locations</div><div class="hl-desc" data-t="hl4d">Kamppi & Hakaniemi</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="menu-prev">
+  <div class="inner">
+    <div class="sec-label" data-t="menuprv_label">From the kitchen</div>
+    <h2 class="sec-title" data-t="menuprv_title">Signature dishes</h2>
+    <p class="sec-body" data-t="menuprv_body">From hand-pulled Lagman to crispy Samsa — every dish tells a story from the Silk Road.</p>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <!-- <img class="pc-img" src="images/leghmen.jpg" alt="Fried Leghmen"> -->
+        <div class="pc-num">01</div>
+        <div class="pc-title" data-t="dish1n">Fried Leghmen</div>
+        <div class="pc-desc" data-t="dish1d">Dry stir-fried handmade noodles with fresh seasonal vegetables. Choice of beef, chicken, shrimp or tofu.</div>
+        <div class="pc-price">€16.50</div>
+      </div>
+      <div class="preview-card">
+        <!-- <img class="pc-img" src="images/goshnaan.jpg" alt="Gösh Nan"> -->
+        <div class="pc-num">02</div>
+        <div class="pc-title" data-t="dish2n">Gösh Nan</div>
+        <div class="pc-desc" data-t="dish2d">Uyghur pizza — handmade flatbread topped with beef, onion and pepper. Also available vegan.</div>
+        <div class="pc-price">€16.90</div>
+      </div>
+      <div class="preview-card">
+        <!-- <img class="pc-img" src="images/manta.jpg" alt="Manta"> -->
+        <div class="pc-num">03</div>
+        <div class="pc-title" data-t="dish3n">Manta</div>
+        <div class="pc-desc" data-t="dish3d">Handmade steamed dumplings filled with beef and vegetables, or tofu for a vegan option.</div>
+        <div class="pc-price">€8.90 / 6pc</div>
+      </div>
+      <div class="preview-card">
+        <!-- <img class="pc-img" src="images/samsa.jpg" alt="Samsa"> -->
+        <div class="pc-num">04</div>
+        <div class="pc-title" data-t="dish4n">Samsa</div>
+        <div class="pc-desc" data-t="dish4d">Flaky baked pastries filled with spiced beef and onion — golden and satisfying.</div>
+        <div class="pc-price">€9.50 / 3pc</div>
+      </div>
+    </div>
+    <button class="view-menu-btn" onclick="goMenu()" data-t="viewmenu_btn">View full menu →</button>
+  </div>
+</section>
+
+<section class="reviews-section">
+  <div class="inner">
+    <div class="sec-label" data-t="rev_label">What people say</div>
+    <h2 class="sec-title" data-t="rev_title">Loved by Helsinki</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text" data-t="rev1">"The place has a really nice vibe. There are even couches to sit and enjoy the food."</p>
+        <div class="review-author">Toshiro K.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text" data-t="rev2">"The broth was rich and flavorful — you could really taste the quality."</p>
+        <div class="review-author">Shohida A.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text" data-t="rev3">"A hidden gem in Kamppi with authentic flavours you won't find elsewhere."</p>
+        <div class="review-author">Stanislav A.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="visit-sec">
+  <div class="inner">
+    <div class="sec-label" data-t="visit_label">Find us</div>
+    <h2 class="sec-title" data-t="visit_title">Visit us</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-label" data-t="loc1">Kamppi</div>
+        <div class="info-val"><strong>Malminrinne 3</strong>00100 Helsinki</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label" data-t="loc2">Hakaniemi</div>
+        <div class="info-val"><strong>Siltasaarenkatu 13</strong>00530 Helsinki</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label" data-t="hours_label">Opening hours</div>
+        <div class="info-val" data-t="hours_val"><strong>Tue–Fri</strong> 11:00–21:00<br><strong>Sat–Sun</strong> 11:30–21:30<br><strong>Mon</strong> Closed</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label" data-t="contact_label">Contact</div>
+        <div class="info-val"><strong>Kamppi</strong> 050 372 8692<br><strong>Hakaniemi</strong> 050 313 9358</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Uyghur Noodle House</div>
+  <div class="footer-sub">Kamppi · Hakaniemi · Helsinki</div>
+  <div class="footer-links">
+    <a onclick="scrollTo(0,0)" data-t="nav_home">Home</a>
+    <a onclick="goMenu()" data-t="nav_menu">Menu</a>
+    <a onclick="document.getElementById('visit-sec').scrollIntoView({behavior:'smooth'})" data-t="nav_visit">Visit</a>
+  </div>
+</footer>
+</div>
+
+<!-- MENU PAGE -->
+<div id="menu-page" class="page">
+<div style="background:var(--dark);min-height:100vh">
+<div class="menu-page-hero">
+  <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#e8a87c;margin-bottom:.5rem" data-t="menupage_tag">Full menu</div>
+  <h1 data-t="menupage_title">Our menu</h1>
+  <p data-t="menupage_sub">Handmade with love · Helsinki</p>
+  <button class="back-btn" onclick="goHome()" data-t="back_btn">← Back to home</button>
+</div>
+<div class="menu-cats">
+  <button class="cat-btn active" onclick="filterCat('all',event)" data-t="cat_all">All</button>
+  <button class="cat-btn" onclick="filterCat('noodles',event)" data-t="cat_noodles">Noodles</button>
+  <button class="cat-btn" onclick="filterCat('mains',event)" data-t="cat_mains">Mains</button>
+  <button class="cat-btn" onclick="filterCat('starters',event)" data-t="cat_starters">Starters</button>
+  <button class="cat-btn" onclick="filterCat('dumplings',event)" data-t="cat_dumplings">Dumplings</button>
+  <button class="cat-btn" onclick="filterCat('drinks',event)" data-t="cat_drinks">Drinks</button>
+</div>
+<div class="menu-body">
+  <div class="inner" id="menu-content"></div>
+</div>
+</div>
+</div>
+
+<script>
+const T = {
+  en:{
+    nav_home:"Home",nav_menu:"Menu",nav_about:"About",nav_visit:"Visit",nav_reserve:"Reserve",
+    hero_tag:"Authentic Central Asian Cuisine · Helsinki",
+    hero_h1:"Hand-pulled noodles,<br><em>rich with tradition</em>",
+    hero_sub:"Bringing the bold, aromatic flavours of Uyghur cuisine to the heart of Kamppi.",
+    hero_book:"Book a table",hero_viewmenu:"View menu",
+    rating_reviews:"208 Google reviews",rating_hours:"Open Tue–Sun · Closes 9:30 PM",
+    about_label:"Our story",about_title:"Where East meets<br>West on a plate",
+    about_body:"Uyghur cuisine is a rare culinary crossroads — born from the Silk Road, shaped by both Central Asian and Chinese influences. Every dish is handmade by our skilled chefs using fresh ingredients and recipes passed down through generations.",
+    feat1:"Handmade fresh noodles, pulled to order",feat2:"Rich, slow-simmered broths and aromatic spices",
+    feat3:"Cozy atmosphere with couch seating",feat4:"Two locations in Helsinki",
+    est:"Est. Helsinki",why_label:"Why us",why_title:"The Uyghur difference",
+    hl1t:"Hand-pulled noodles",hl1d:"Made fresh daily, every single order",
+    hl2t:"Vegan options",hl2d:"Plant-based choices across the menu",
+    hl3t:"Cozy vibe",hl3d:"Couches, warmth, and great company",
+    hl4t:"Two locations",hl4d:"Kamppi & Hakaniemi",
+    menuprv_label:"From the kitchen",menuprv_title:"Signature dishes",
+    menuprv_body:"From hand-pulled Lagman to crispy Samsa — every dish tells a story from the Silk Road.",
+    dish1n:"Fried Leghmen",dish1d:"Dry stir-fried handmade noodles with fresh seasonal vegetables. Choice of beef, chicken, shrimp or tofu.",
+    dish2n:"Gösh Nan",dish2d:"Uyghur pizza — handmade flatbread topped with beef, onion and pepper. Also available vegan.",
+    dish3n:"Manta",dish3d:"Handmade steamed dumplings filled with beef and vegetables, or tofu for a vegan option.",
+    dish4n:"Samsa",dish4d:"Flaky baked pastries filled with spiced beef and onion — golden and satisfying.",
+    viewmenu_btn:"View full menu →",
+    rev_label:"What people say",rev_title:"Loved by Helsinki",
+    rev1:'"The place has a really nice vibe. There are even couches to sit and enjoy the food."',
+    rev2:'"The broth was rich and flavorful — you could really taste the quality."',
+    rev3:'"A hidden gem in Kamppi with authentic flavours you won\'t find elsewhere."',
+    visit_label:"Find us",visit_title:"Visit us",loc1:"Kamppi",loc2:"Hakaniemi",
+    hours_label:"Opening hours",
+    hours_val:"<strong>Tue–Fri</strong> 11:00–21:00<br><strong>Sat–Sun</strong> 11:30–21:30<br><strong>Mon</strong> Closed",
+    contact_label:"Contact",
+    menupage_tag:"Full menu",menupage_title:"Our menu",menupage_sub:"Handmade with love · Helsinki",
+    back_btn:"← Back to home",
+    cat_all:"All",cat_noodles:"Noodles",cat_mains:"Mains",cat_starters:"Starters",cat_dumplings:"Dumplings",cat_drinks:"Drinks",
+  },
+  fi:{
+    nav_home:"Etusivu",nav_menu:"Menu",nav_about:"Meistä",nav_visit:"Vieraile",nav_reserve:"Varaa pöytä",
+    hero_tag:"Aito Keski-Aasian keittiö · Helsinki",
+    hero_h1:"Käsinvedetyt nuudelit,<br><em>täynnä perinnettä</em>",
+    hero_sub:"Tuomme uiguurikeittiön rohkeat, aromikkaat maut Kamppin sydämeen.",
+    hero_book:"Varaa pöytä",hero_viewmenu:"Katso menu",
+    rating_reviews:"208 Google-arvostelua",rating_hours:"Auki Ti–Su · Suljetaan klo 21:30",
+    about_label:"Tarinamme",about_title:"Missä itä kohtaa<br>lännen lautasella",
+    about_body:"Uiguurikeittiö on harvinainen kulinaarinen risteyspaikka — syntynyt Silkkitiellä, muokkautunut sekä Keski-Aasian että Kiinan vaikutuksesta. Jokainen annos on käsintehty tuoreista raaka-aineista sukupolvelta toiselle siirtyvillä resepteillä.",
+    feat1:"Käsinvedetyt tuoreet nuudelit, tehty tilauksesta",feat2:"Runsaat, hitaasti haudutellut liemet ja aromaattiset mausteet",
+    feat3:"Kodikas tunnelma sohvaistumismahdollisuuksineen",feat4:"Kaksi toimipistettä Helsingissä",
+    est:"Perustettu Helsingissä",why_label:"Miksi me",why_title:"Uiguuri-ero",
+    hl1t:"Käsinvedetyt nuudelit",hl1d:"Tehty tuoreina päivittäin jokaiseen tilaukseen",
+    hl2t:"Vegaanivaihtoehto",hl2d:"Kasvipohjaisia valintoja koko menussa",
+    hl3t:"Kodikas tunnelma",hl3d:"Sohvia, lämpöä ja hyvää seuraa",
+    hl4t:"Kaksi toimipistettä",hl4d:"Kamppi & Hakaniemi",
+    menuprv_label:"Keittiöstä",menuprv_title:"Suosituimmat annokset",
+    menuprv_body:"Käsinvedetyistä Lagman-nuudeleista rapeisiin Samsoihin — jokainen annos kertoo tarinan Silkkitieltä.",
+    dish1n:"Paistettu Lägmän",dish1d:"Kuivapaistetut käsintehdyt nuudelit tuoreiden kasvisten kera. Valintana nauta, kana, katkarapu tai tofu.",
+    dish2n:"Gösh Nan",dish2d:"Uiguuri-pizza — käsinleivottu litteä leipä naudanlihalla, sipulilla ja paprikalla. Myös vegaanina.",
+    dish3n:"Manta",dish3d:"Käsintehdyt höyrytetyt dumplingit täytettynä naudanlihalla ja vihanneksilla tai tofulla.",
+    dish4n:"Samsa",dish4d:"Rapeat uunipiirakat, täytetty maustetulla naudanlihalla ja sipulilla — kultaisia ja täyttäviä.",
+    viewmenu_btn:"Katso koko menu →",
+    rev_label:"Mitä asiakkaat sanovat",rev_title:"Helsinkiläisten suosiossa",
+    rev1:'"Paikka on todella mukava. Siellä on jopa sohvia, joilla voi nauttia ruoasta."',
+    rev2:'"Liemi oli rikas ja maukas — raaka-aineiden laatu todella maistui."',
+    rev3:'"Piilotettu helmi Kampissa, jonka aitoja makuja et löydä muualta."',
+    visit_label:"Löydä meidät",visit_title:"Vieraile meillä",loc1:"Kamppi",loc2:"Hakaniemi",
+    hours_label:"Aukioloajat",
+    hours_val:"<strong>Ti–Pe</strong> 11:00–21:00<br><strong>La–Su</strong> 11:30–21:30<br><strong>Ma</strong> Suljettu",
+    contact_label:"Yhteystiedot",
+    menupage_tag:"Koko menu",menupage_title:"Ruokalista",menupage_sub:"Käsintehtyjä, rakkaudella · Helsinki",
+    back_btn:"← Takaisin etusivulle",
+    cat_all:"Kaikki",cat_noodles:"Nuudelit",cat_mains:"Pääruoat",cat_starters:"Alkuruoat",cat_dumplings:"Dumplingit",cat_drinks:"Juomat",
+  },
+  ug:{
+    nav_home:"باش بەت",nav_menu:"مېنيۇ",nav_about:"بىز ھەققىمىزدە",nav_visit:"زىيارەت",nav_reserve:"ئورۇن ساقلاش",
+    hero_tag:"ئاساسلىق ئوتتۇرا ئاسىيا تامىقى · خېلسىنكى",
+    hero_h1:"قول بىلەن سوزۇلغان ئەرمە،<br><em>ئەنئەنەگە تولغان</em>",
+    hero_sub:"ئۇيغۇر تامىقىنىڭ دادلىق خۇشبۇيلۇق تەمىنى كامپپى مەركىزىگە ئېلىپ كېلىمىز.",
+    hero_book:"ئورۇن ساقلاش",hero_viewmenu:"مېنيۇنى كۆرۈش",
+    rating_reviews:"208 گۇگۇل باھاسى",rating_hours:"سەيشەنبە–يەكشەنبە ئوچۇق · 21:30 دە ئىچكى",
+    about_label:"تارىخىمىز",about_title:"شەرق بىلەن غەرب<br>تاباقتا ئۇچرىشىدۇ",
+    about_body:"ئۇيغۇر تامىقى نادىر مەدەنىيەت كېسىشمىسى — يىپەك يولىدىن تۇغۇلغان، ئوتتۇرا ئاسىيا ۋە جۇڭگو تەسىرى ئاستىدا شەكىللەنگەن.",
+    feat1:"قول بىلەن سوزۇلغان تازا ئەرمە، زاكاز بويىچە",feat2:"مول، ئاستە قاينىتىلغان شورپا ۋە ئىپارلىق ھاشىيە",
+    feat3:"دىۋان بار ئۆيگە ئوخشاش مۇھىت",feat4:"خېلسىنكىدە ئىككى فىلىيال",
+    est:"خېلسىنكىدە قۇرۇلغان",why_label:"نېمىشقا بىز",why_title:"ئۇيغۇر پارقى",
+    hl1t:"قول بىلەن سوزۇلغان ئەرمە",hl1d:"ھەر كۈنى تازا، ھەر زاكازغا",
+    hl2t:"ۋېگان تاللاش",hl2d:"مېنيۇ بويىچە ئۆسۈملۈك غىزا",
+    hl3t:"ئىسسىق مۇھىت",hl3d:"دىۋان، ئىسسىقلىق ۋە ياخشى ھەمراھ",
+    hl4t:"ئىككى فىلىيال",hl4d:"كامپپى ۋە خاكانىيېمى",
+    menuprv_label:"ئاشخانىدىن",menuprv_title:"ئاساسىي تاماقلار",
+    menuprv_body:"قول بىلەن سوزۇلغان لاغمانلاردىن قاقال سامساغىچە — ھەر تاماق يىپەك يولىدىكى ھېكايىنى سۆزلەيدۇ.",
+    dish1n:"قوۋۇرغا لاغمان",dish1d:"قاقال قوۋۇرغان قول ئەرمە تازا پىشلاق كۆكتات بىلەن.",
+    dish2n:"گۆش نان",dish2d:"ئۇيغۇر پىتسىسى — قول بىلەن ياسالغان يالپاق نان ئۈستىگە گۆش، پىياز، قالەمپىر.",
+    dish3n:"مانتا",dish3d:"قول بىلەن ياسالغان بۇغلانما مانتا، گۆش ۋە كۆكتات ياكى توفۇ بىلەن.",
+    dish4n:"سامسا",dish4d:"مول گۆش ۋە پىياز بىلەن تولدۇرۇلغان ئالتۇن رەڭلىك تاندىر سامسا.",
+    viewmenu_btn:"تولۇق مېنيۇنى كۆرۈش →",
+    rev_label:"مۇشتەرىلەر نېمە دەيدۇ",rev_title:"خېلسىنكىلىكلەر ياخشى كۆرىدۇ",
+    rev1:'"رېستوران مۇھىتى ئەلا. دىۋانلاردا ئولتۇرۇپ تاماق يىيەلەيسىز."',
+    rev2:'"شورپا مول ۋە دادلىق ئىدى — سۈپەت ئۇنۇمى بىلىنىپ تۇرىدۇ."',
+    rev3:'"كامپپىدىكى يوشۇرۇن مۇزى — باشقا يەردە تابالمايدىغان ئاساسلىق تەم."',
+    visit_label:"بىزنى تېپىڭ",visit_title:"بىزگە كېلىڭ",loc1:"كامپپى",loc2:"خاكانىيېمى",
+    hours_label:"ئىش ۋاقتى",
+    hours_val:"<strong>سەيشەنبە–جۈمە</strong> 11:00–21:00<br><strong>شەنبە–يەكشەنبە</strong> 11:30–21:30<br><strong>دۈشەنبە</strong> يىپىق",
+    contact_label:"ئالاقىلىشىش",
+    menupage_tag:"تولۇق مېنيۇ",menupage_title:"مېنيۇمىز",menupage_sub:"قول بىلەن ياسالغان، مۇھەببەت بىلەن · خېلسىنكى",
+    back_btn:"← باش بەتكە قايتىش",
+    cat_all:"ھەممىسى",cat_noodles:"ئەرمە",cat_mains:"ئاساسىي تاماق",cat_starters:"ئالدىنقى تاماق",cat_dumplings:"مانتا",cat_drinks:"ئىچىملىك",
+  }
+};
+
+// ============================================================
+// MENU DATA — to add a photo, set img:"images/yourfile.jpg"
+// ============================================================
+const MENU = [
+  {cat:'noodles',img:'',name:'Fried Leghmen I',fi:'Paistettu Lägmän I',ug:'قوۋۇرغا لاغمان I',desc:'Dry stir-fried handmade noodles with fresh seasonal vegetables. Noodle: handmade / udon / rice. Protein: beef, chicken, shrimp or tofu (vegan).',price:'€16.50',tags:['vegan']},
+  {cat:'noodles',img:'',name:'Fried Leghmen II (chili sauce)',fi:'Paistettu Lägmän II (chili kastike)',ug:'قوۋۇرغا لاغمان II (چىلى ساۋسى)',desc:'Same as Leghmen I but with a bold chili sauce. Noodle: handmade / udon / rice. Protein: beef, chicken, shrimp or tofu (vegan).',price:'€16.50',tags:['vegan','spicy']},
+  {cat:'noodles',img:'',name:'Ügre – Noodle Soup',fi:'Ygrä – Nuudelikeitto',ug:'ئۇيغۇر شورپا',desc:'Handmade noodle soup with beef, potato, carrot, pepper, spring onion, spinach, tofu or without meat.',price:'€16.90',tags:['vegan']},
+  {cat:'noodles',img:'',name:'Beef Noodle Soup',fi:'Naudanliha Nuudelikeitto',ug:'ئۆكۈز گۆشى شورپىسى',desc:'Rich broth with beef, spring onion, leek and spinach. Choose handmade or rice noodle.',price:'€15.50',tags:[]},
+  {cat:'mains',img:'',name:'Gösh Nan – Uyghur Pizza',fi:'Gösh Nan – Uiguurilainen Pizza',ug:'گۆش نان – ئۇيغۇر پىتسىسى',desc:'Handmade flatbread with beef, onion and pepper — or vegan with spinach and spring onion.',price:'€16.90',tags:['vegan']},
+  {cat:'mains',img:'',name:'Fried Chicken',fi:'Paistettu Kana',ug:'قوۋۇرغا توخۇ',desc:'Fried chicken with handmade noodle or rice. Spring onion, leek, spinach, potato, garlic, pepper.',price:'€17.90',tags:['spicy']},
+  {cat:'mains',img:'',name:'Fried Rice',fi:'Paistettu Riisi',ug:'قوۋۇرغا گۈرۈچ',desc:'Fried rice with fresh seasonal vegetables. Choose beef, chicken, shrimp or tofu (vegan).',price:'€14.90',tags:['vegan']},
+  {cat:'dumplings',img:'',name:'Manta (steamed dumplings)',fi:'Manta',ug:'مانتا',desc:'Handmade steamed dumplings. Beef or tofu (vegan). 6 pcs: €8.90 / 12 pcs: €16.90.',price:'€8.90 / 6pc',tags:['vegan']},
+  {cat:'dumplings',img:'',name:'Samsa (baked pastry)',fi:'Samsa',ug:'سامسا',desc:'Flaky baked pastry filled with beef, onion and pepper. 3 pcs: €9.50 / 6 pcs: €17.90.',price:'€9.50 / 3pc',tags:[]},
+  {cat:'dumplings',img:'',name:'Dumpling (Nyytit)',fi:'Nyytit',ug:'دۇمپلىڭ',desc:'Handmade dumplings with beef, spring onion and Chinese cabbage, or vegan. 7 pcs: €7.90 / 14 pcs: €14.90.',price:'€7.90 / 7pc',tags:['vegan']},
+  {cat:'starters',img:'',name:'Beef Salad',fi:'Naudanlihasalaatti',ug:'ئۆكۈز گۆشى سالاتى',desc:'Beef, cucumber, garlic, spring onion, chilli sauce.',price:'€5.90',tags:['spicy']},
+  {cat:'starters',img:'',name:'Tofu Salad',fi:'Tofu Salaatti',ug:'توفۇ سالاتى',desc:'Tofu, garlic, cucumber, spring onion, chilli sauce. Vegan.',price:'€5.90',tags:['vegan','spicy']},
+  {cat:'starters',img:'',name:'Kimchi',fi:'Kimchi',ug:'كىمچى',desc:'Cabbage, ginger, garlic, chilli sauce. Vegan.',price:'€5.90',tags:['vegan','spicy']},
+  {cat:'drinks',img:'',name:'Dogap (yogurt drink)',fi:'Dogap (juoma)',ug:'دوغاپ (ئىچىملىك)',desc:'Cold yogurt and ice drink, sugar added.',price:'€3.90',tags:[]},
+];
+
+let currentLang = 'en';
+let currentCat = 'all';
+
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  const t = T[lang];
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const key = el.getAttribute('data-t');
+    if(t[key]!==undefined) el.innerHTML = t[key];
+  });
+  renderMenu();
+}
+
+function goMenu(){
+  document.getElementById('home').classList.remove('active');
+  document.getElementById('menu-page').classList.add('active');
+  window.scrollTo(0,0);
+  renderMenu();
+}
+function goHome(){
+  document.getElementById('menu-page').classList.remove('active');
+  document.getElementById('home').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function filterCat(cat,e){
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  if(e&&e.target) e.target.classList.add('active');
+  renderMenu();
+}
+
+function renderMenu(){
+  const catLabels={
+    noodles:{en:'Noodles & Soups',fi:'Nuudelit & Keitot',ug:'ئەرمە & شورپا'},
+    mains:{en:'Main Dishes',fi:'Pääruoat',ug:'ئاساسىي تاماقلار'},
+    dumplings:{en:'Dumplings & Pastries',fi:'Dumplingit & Piirakat',ug:'مانتا & سامسا'},
+    starters:{en:'Starters & Salads',fi:'Alkuruoat & Salaatit',ug:'ئالدىنقى تاماق'},
+    drinks:{en:'Drinks',fi:'Juomat',ug:'ئىچىملىكلەر'}
+  };
+  const items = currentCat==='all' ? MENU : MENU.filter(i=>i.cat===currentCat);
+  const cats = [...new Set(items.map(i=>i.cat))];
+  let html='';
+  cats.forEach(cat=>{
+    const label=(catLabels[cat]&&catLabels[cat][currentLang])||cat;
+    html+=`<div class="menu-section-title">${label}</div><div class="menu-items">`;
+    items.filter(i=>i.cat===cat).forEach(item=>{
+      const name=currentLang==='fi'?item.fi:currentLang==='ug'?item.ug:item.name;
+      const tagHTML=item.tags.map(tag=>tag==='vegan'?`<span class="mi-tag tag-vegan">Vegan</span>`:`<span class="mi-tag tag-spicy">🌶 Spicy</span>`).join('');
+      const imgHTML=item.img?`<img class="dish-img" src="${item.img}" alt="${name}" loading="lazy">`:'';
+      html+=`<div class="menu-item"><div class="mi-left"><div class="mi-name">${name}</div><div class="mi-sub">${item.desc}</div>${item.tags.length?`<div class="mi-tags">${tagHTML}</div>`:''}</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:.5rem">${imgHTML}<div class="mi-price">${item.price}</div></div></div>`;
+    });
+    html+=`</div>`;
+  });
+  document.getElementById('menu-content').innerHTML=html;
+}
+
+renderMenu();
+</script>
+</body>
+</html>
+ 
