@@ -105,6 +105,11 @@ footer{background:var(--dark);padding:2rem 1.5rem;text-align:center}
 .back-btn{background:transparent;border:1px solid rgba(249,244,237,.25);color:rgba(249,244,237,.7);padding:6px 16px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-family:'Inter',sans-serif;margin-top:1.25rem}
 .back-btn:hover{background:rgba(249,244,237,.1)}
 
+.loc-switcher{display:flex;justify-content:center;gap:0;padding:1.5rem 1.5rem 0;background:var(--dark)}
+.loc-btn{border:none;background:rgba(255,255,255,.05);color:rgba(249,244,237,.45);padding:10px 28px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;border-bottom:2px solid transparent}
+.loc-btn:first-child{border-radius:3px 0 0 0}
+.loc-btn:last-child{border-radius:0 3px 0 0}
+.loc-btn.active{background:rgba(184,76,42,.15);color:#e8a87c;border-bottom:2px solid var(--rust)}
 .menu-cats{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;padding:1.25rem 1.5rem;background:rgba(249,244,237,.04);border-bottom:1px solid rgba(255,255,255,.06)}
 .cat-btn{border:1px solid rgba(249,244,237,.15);background:transparent;color:rgba(249,244,237,.55);padding:5px 14px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-radius:20px;font-family:'Inter',sans-serif;transition:all .2s}
 .cat-btn.active,.cat-btn:hover{background:var(--rust);border-color:var(--rust);color:#fff}
@@ -317,6 +322,10 @@ footer{background:var(--dark);padding:2rem 1.5rem;text-align:center}
   <p data-t="menupage_sub">Handmade with love · Helsinki</p>
   <button class="back-btn" onclick="goHome()" data-t="back_btn">← Back to home</button>
 </div>
+<div class="loc-switcher">
+  <button class="loc-btn active" onclick="setLocation('kamppi',event)">📍 Kamppi</button>
+  <button class="loc-btn" onclick="setLocation('hakaniemi',event)">📍 Hakaniemi</button>
+</div>
 <div class="menu-cats">
   <button class="cat-btn active" onclick="filterCat('all',event)" data-t="cat_all">All</button>
   <button class="cat-btn" onclick="filterCat('noodles',event)" data-t="cat_noodles">Noodles</button>
@@ -443,22 +452,37 @@ const T = {
 // ============================================================
 // MENU DATA — to add a photo, set img:"images/yourfile.jpg"
 // ============================================================
-const MENU = [
-  {cat:'noodles',img:'lagman.jpg',name:'Fried Leghmen I',fi:'Paistettu Lägmän I',ug:'قوۋۇرغا لاغمان I',desc:'Dry stir-fried handmade noodles with fresh seasonal vegetables. Noodle: handmade / udon / rice. Protein: beef, chicken, shrimp or tofu (vegan).',price:'€16.50',tags:['vegan']},
-  {cat:'noodles',img:'',name:'Fried Leghmen II (chili sauce)',fi:'Paistettu Lägmän II (chili kastike)',ug:'قوۋۇرغا لاغمان II (چىلى ساۋسى)',desc:'Same as Leghmen I but with a bold chili sauce. Noodle: handmade / udon / rice. Protein: beef, chicken, shrimp or tofu (vegan).',price:'€16.50',tags:['vegan','spicy']},
-  {cat:'noodles',img:'',name:'Ügre – Noodle Soup',fi:'Ygrä – Nuudelikeitto',ug:'ئۇيغۇر شورپا',desc:'Handmade noodle soup with beef, potato, carrot, pepper, spring onion, spinach, tofu or without meat.',price:'€16.90',tags:['vegan']},
-  {cat:'noodles',img:'',name:'Beef Noodle Soup',fi:'Naudanliha Nuudelikeitto',ug:'ئۆكۈز گۆشى شورپىسى',desc:'Rich broth with beef, spring onion, leek and spinach. Choose handmade or rice noodle.',price:'€15.50',tags:[]},
-  {cat:'mains',img:'',name:'Gösh Nan – Uyghur Pizza',fi:'Gösh Nan – Uiguurilainen Pizza',ug:'گۆش نان – ئۇيغۇر پىتسىسى',desc:'Handmade flatbread with beef, onion and pepper — or vegan with spinach and spring onion.',price:'€16.90',tags:['vegan']},
-  {cat:'mains',img:'',name:'Fried Chicken',fi:'Paistettu Kana',ug:'قوۋۇرغا توخۇ',desc:'Fried chicken with handmade noodle or rice. Spring onion, leek, spinach, potato, garlic, pepper.',price:'€17.90',tags:['spicy']},
-  {cat:'mains',img:'',name:'Fried Rice',fi:'Paistettu Riisi',ug:'قوۋۇرغا گۈرۈچ',desc:'Fried rice with fresh seasonal vegetables. Choose beef, chicken, shrimp or tofu (vegan).',price:'€14.90',tags:['vegan']},
-  {cat:'dumplings',img:'',name:'Manta (steamed dumplings)',fi:'Manta',ug:'مانتا',desc:'Handmade steamed dumplings. Beef or tofu (vegan). 6 pcs: €8.90 / 12 pcs: €16.90.',price:'€8.90 / 6pc',tags:['vegan']},
-  {cat:'dumplings',img:'',name:'Samsa (baked pastry)',fi:'Samsa',ug:'سامسا',desc:'Flaky baked pastry filled with beef, onion and pepper. 3 pcs: €9.50 / 6 pcs: €17.90.',price:'€9.50 / 3pc',tags:[]},
-  {cat:'dumplings',img:'',name:'Dumpling (Nyytit)',fi:'Nyytit',ug:'دۇمپلىڭ',desc:'Handmade dumplings with beef, spring onion and Chinese cabbage, or vegan. 7 pcs: €7.90 / 14 pcs: €14.90.',price:'€7.90 / 7pc',tags:['vegan']},
-  {cat:'starters',img:'',name:'Beef Salad',fi:'Naudanlihasalaatti',ug:'ئۆكۈز گۆشى سالاتى',desc:'Beef, cucumber, garlic, spring onion, chilli sauce.',price:'€5.90',tags:['spicy']},
-  {cat:'starters',img:'',name:'Tofu Salad',fi:'Tofu Salaatti',ug:'توفۇ سالاتى',desc:'Tofu, garlic, cucumber, spring onion, chilli sauce. Vegan.',price:'€5.90',tags:['vegan','spicy']},
-  {cat:'starters',img:'',name:'Kimchi',fi:'Kimchi',ug:'كىمچى',desc:'Cabbage, ginger, garlic, chilli sauce. Vegan.',price:'€5.90',tags:['vegan','spicy']},
-  {cat:'drinks',img:'',name:'Dogap (yogurt drink)',fi:'Dogap (juoma)',ug:'دوغاپ (ئىچىملىك)',desc:'Cold yogurt and ice drink, sugar added.',price:'€3.90',tags:[]},
+const MENU_KAMPPI = [
+  {cat:"noodles",img:"lagman.jpg",name:"Fried Leghmen I",fi:"Paistettu Lägmän I",ug:"قوۋۇرغا لاغمان I",desc:"Dry stir-fried handmade noodles with fresh seasonal vegetables. Noodle: handmade / udon / rice. Protein: beef, chicken, shrimp or tofu (vegan).",price:"€16.50",tags:["vegan"]},
+  {cat:"noodles",img:"",name:"Fried Leghmen II (chili sauce)",fi:"Paistettu Lägmän II (chili kastike)",ug:"قوۋۇرغا لاغمان II",desc:"Same as Leghmen I but with a bold chili sauce. Choice of beef, chicken, shrimp or tofu.",price:"€16.50",tags:["vegan","spicy"]},
+  {cat:"noodles",img:"",name:"Ügre – Noodle Soup",fi:"Ygrä – Nuudelikeitto",ug:"ئۇيغۇر شورپا",desc:"Handmade noodle soup with beef, potato, carrot, pepper, spring onion, spinach, tofu or without meat.",price:"€16.90",tags:["vegan"]},
+  {cat:"noodles",img:"",name:"Beef Noodle Soup",fi:"Naudanliha Nuudelikeitto",ug:"ئۆكۈز گۆشى شورپىسى",desc:"Rich broth with beef, spring onion, leek and spinach. Choose handmade or rice noodle.",price:"€15.50",tags:[]},
+  {cat:"mains",img:"",name:"Gösh Nan – Uyghur Pizza",fi:"Gösh Nan – Uiguurilainen Pizza",ug:"گۆش نان",desc:"Handmade flatbread with beef, onion and pepper — or vegan with spinach and spring onion.",price:"€16.90",tags:["vegan"]},
+  {cat:"mains",img:"",name:"Fried Chicken",fi:"Paistettu Kana",ug:"قوۋۇرغا توخۇ",desc:"Fried chicken with handmade noodle or rice. Spring onion, leek, spinach, potato, garlic, pepper.",price:"€17.90",tags:["spicy"]},
+  {cat:"mains",img:"",name:"Fried Rice",fi:"Paistettu Riisi",ug:"قوۋۇرغا گۈرۈچ",desc:"Fried rice with fresh seasonal vegetables. Choose beef, chicken, shrimp or tofu (vegan).",price:"€14.90",tags:["vegan"]},
+  {cat:"dumplings",img:"",name:"Manta (steamed dumplings)",fi:"Manta",ug:"مانتا",desc:"Handmade steamed dumplings. Beef or tofu (vegan). 6 pcs: €8.90 / 12 pcs: €16.90.",price:"€8.90 / 6pc",tags:["vegan"]},
+  {cat:"dumplings",img:"",name:"Samsa (baked pastry)",fi:"Samsa",ug:"سامسا",desc:"Flaky baked pastry filled with beef, onion and pepper. 3 pcs: €9.50 / 6 pcs: €17.90.",price:"€9.50 / 3pc",tags:[]},
+  {cat:"dumplings",img:"",name:"Dumpling (Nyytit)",fi:"Nyytit",ug:"دۇمپلىڭ",desc:"Handmade dumplings with beef, spring onion and Chinese cabbage, or vegan. 7 pcs: €7.90 / 14 pcs: €14.90.",price:"€7.90 / 7pc",tags:["vegan"]},
+  {cat:"starters",img:"",name:"Beef Salad",fi:"Naudanlihasalaatti",ug:"ئۆكۈز گۆشى سالاتى",desc:"Beef, cucumber, garlic, spring onion, chilli sauce.",price:"€5.90",tags:["spicy"]},
+  {cat:"starters",img:"",name:"Tofu Salad",fi:"Tofu Salaatti",ug:"توفۇ سالاتى",desc:"Tofu, garlic, cucumber, spring onion, chilli sauce. Vegan.",price:"€5.90",tags:["vegan","spicy"]},
+  {cat:"starters",img:"",name:"Kimchi",fi:"Kimchi",ug:"كىمچى",desc:"Cabbage, ginger, garlic, chilli sauce. Vegan.",price:"€5.90",tags:["vegan","spicy"]},
+  {cat:"drinks",img:"",name:"Dogap (yogurt drink)",fi:"Dogap (juoma)",ug:"دوغاپ",desc:"Cold yogurt and ice drink, sugar added.",price:"€3.90",tags:[]},
 ];
+
+const MENU_HAKANIEMI = [
+  {cat:"noodles",img:"",name:"Fried Leghmen I",fi:"Paistettu Lägmän I",ug:"قوۋۇرغا لاغمان I",desc:"Dry stir-fried handmade noodles with fresh seasonal vegetables. Choice of beef, chicken, shrimp or tofu.",price:"€16.50",tags:["vegan"]},
+  {cat:"noodles",img:"",name:"Fried Leghmen II (chili sauce)",fi:"Paistettu Lägmän II (chili kastike)",ug:"قوۋۇرغا لاغمان II",desc:"Stir-fried noodles with bold chili sauce and seasonal vegetables.",price:"€16.50",tags:["vegan","spicy"]},
+  {cat:"noodles",img:"",name:"Beef Noodle Soup",fi:"Naudanliha Nuudelikeitto",ug:"ئۆكۈز گۆشى شورپىسى",desc:"Rich broth with beef, spring onion, leek and spinach.",price:"€15.50",tags:[]},
+  {cat:"mains",img:"",name:"Gösh Nan – Uyghur Pizza",fi:"Gösh Nan – Uiguurilainen Pizza",ug:"گۆش نان",desc:"Handmade flatbread with beef, onion and pepper — or vegan.",price:"€16.90",tags:["vegan"]},
+  {cat:"mains",img:"",name:"Fried Rice",fi:"Paistettu Riisi",ug:"قوۋۇرغا گۈرۈچ",desc:"Fried rice with fresh seasonal vegetables. Choose beef, chicken, shrimp or tofu.",price:"€14.90",tags:["vegan"]},
+  {cat:"dumplings",img:"",name:"Manta (steamed dumplings)",fi:"Manta",ug:"مانتا",desc:"Handmade steamed dumplings. Beef or tofu (vegan). 6 pcs / 12 pcs.",price:"€8.90 / 6pc",tags:["vegan"]},
+  {cat:"dumplings",img:"",name:"Samsa (baked pastry)",fi:"Samsa",ug:"سامسا",desc:"Flaky baked pastry with beef, onion and pepper.",price:"€9.50 / 3pc",tags:[]},
+  {cat:"starters",img:"",name:"Beef Salad",fi:"Naudanlihasalaatti",ug:"ئۆكۈز گۆشى سالاتى",desc:"Beef, cucumber, garlic, spring onion, chilli sauce.",price:"€5.90",tags:["spicy"]},
+  {cat:"starters",img:"",name:"Kimchi",fi:"Kimchi",ug:"كىمچى",desc:"Cabbage, ginger, garlic, chilli sauce. Vegan.",price:"€5.90",tags:["vegan","spicy"]},
+  {cat:"drinks",img:"",name:"Dogap (yogurt drink)",fi:"Dogap (juoma)",ug:"دوغاپ",desc:"Cold yogurt and ice drink, sugar added.",price:"€3.90",tags:[]},
+];
+
+let MENU = MENU_KAMPPI;
 
 let currentLang = 'en';
 let currentCat = 'all';
@@ -485,6 +509,15 @@ function goHome(){
   document.getElementById('menu-page').classList.remove('active');
   document.getElementById('home').classList.add('active');
   window.scrollTo(0,0);
+}
+
+function setLocation(loc,e){
+  MENU = loc==='kamppi' ? MENU_KAMPPI : MENU_HAKANIEMI;
+  document.querySelectorAll('.loc-btn').forEach(b=>b.classList.remove('active'));
+  if(e&&e.target) e.target.classList.add('active');
+  filterCat('all',null);
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.cat-btn').classList.add('active');
 }
 
 function filterCat(cat,e){
@@ -523,4 +556,3 @@ renderMenu();
 </script>
 </body>
 </html>
- 
